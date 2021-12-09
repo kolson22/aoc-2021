@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 #[derive(Debug, Copy, Clone)]
 enum BoardSlot {
     Unmarked(i32),
@@ -9,6 +7,7 @@ enum BoardSlot {
 #[derive(Debug)]
 struct Board {
     board: [[BoardSlot; 5]; 5],
+    marked: [[BoardSlot; 5]; 5],
 }
 
 pub fn parse_input(input: &str) -> Vec<i32> {
@@ -20,24 +19,23 @@ pub fn parse_input(input: &str) -> Vec<i32> {
     return numbers;
 }
 
-pub fn parse_boards(input: &str) {
-    let mut lines: Vec<&str> = input.lines().collect();
-    let boards: Vec<&str> = lines[1..]
-        .chunks(6)
-        .into_iter()
-        .skip(1)
-        .map(|mut lines| lines.join("\n")[1..].parse())
-        .filter_map(Result::ok)
-        .collect();
-        println!("{:?}", boards);
+pub fn parse_board(input: &str) {
+    let boards: Vec<String> = input.trim().lines().skip(1).map(str::parse).map(Result::unwrap).collect();
+    let board1: Vec<Vec<u32>> = boards.into_iter().take(6).skip(1).map(|e| e.split_whitespace()).flatten().map(|item| item.parse::<u32>().unwrap()).collect();
+    println!("{:?}", board1)
 }
 
-pub fn part_1(input: &str) -> anyhow::Result<Vec<i32>> {
-    return Ok(parse_numbers(input));
+pub fn part_1(input: &str) -> Vec<i32> {
+    let numbers = parse_input(input);
+    for i in 0..numbers.len() {
+        // println!("numbers: {}", numbers[i]);
+    }
+    return parse_input(input);
 }
 
 fn main() {
     const DATA: &str = include_str!("./day4.test");
     let result = part_1(&DATA);
-    println!("result is: {:?}", result.unwrap());
+    parse_board(&DATA);
+    println!("result is: {:?}", result);
 }
