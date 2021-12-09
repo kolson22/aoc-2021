@@ -15,7 +15,7 @@ pub fn parse_input(input: &str) -> Vec<i32> {
     let lines: Vec<&str> = input.lines().collect();
     let numbers: Vec<i32> = lines[0]
         .split(',')
-        .map(|e| e.parse().unwrap())
+        .map(str::parse).map(Result::unwrap)
         .collect();
     return numbers;
 }
