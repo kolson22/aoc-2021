@@ -1,3 +1,18 @@
+// use std::str::FromStr;
+
+// struct Num {
+//     data: u32
+// }
+
+
+// impl FromStr for Num {
+//     type Err = std::io::Error;
+//     fn from_str(s: &str) -> Result<Self, Self::Err> {
+//         s.trim().split(',').collect();
+//         return Ok(Num { data: 0 });
+//     }
+// }
+
 fn parse_lines(data: &str) -> Vec<u32> {
     data.trim().lines().map(str::parse).map(Result::unwrap).collect()
 }
