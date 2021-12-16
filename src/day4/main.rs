@@ -134,7 +134,6 @@ fn part1(input: &str) -> i32 {
                     BoardSlot::Unmarked(v) => v,
                     _ => 0,
                 }).sum::<i32>();
-                println!("winner board: {}", idx);
                 break 'outer;
             }
         }
@@ -142,8 +141,33 @@ fn part1(input: &str) -> i32 {
     return winner;
 }
 
+fn part2(input: &str) -> i32 {
+    let mut winner = 0;
+    let numbers = parse_input(&input);
+    let mut boards = parse_boards(&input);
+    for num in numbers {
+        if boards.len() == 1 {
+            if boards[0].mark(num) {
+                winner = num * boards[0].values().map(|e| match e {
+                    BoardSlot::Unmarked(v) => v,
+                    _ => 0,
+                }).sum::<i32>();
+                break;
+            }
+        } else {
+            boards = boards.into_iter().fold(vec![], |mut output, mut board| {
+                if !board.mark(num) {
+                    output.push(board);
+                }
+                return output;
+            });
+        }
+    };
+    return winner;
+}
 
 fn main() {
     const DATA: &str = include_str!("./day4.input");
-    println!("{}", part1(&DATA));
+    println!("part1 {}", part1(&DATA));
+    println!("part2 {}", part2(&DATA));
 }
