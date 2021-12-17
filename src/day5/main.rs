@@ -6,12 +6,11 @@ fn get_fuel_rate(a: i32, items: Vec<i32>) -> i32 {
     let mut output_vec: Vec<i32> = vec![];
     for item in items {
         let mut output = 0;
-        let mut remainder = 0;
-        if a < item {
-            remainder = item - a ;
-        } else {
-            remainder = a - item;
-        }
+        let remainder = match item.cmp(&a) {
+            std::cmp::Ordering::Less => a - item,
+            std::cmp::Ordering::Greater => item - a,
+            std::cmp::Ordering::Equal =>  0
+        };
         for i in 0..remainder + 1 {
             output = output + i;
         }
