@@ -2,6 +2,24 @@ fn parse_input(input: &str) -> Vec<i32> {
     return input.trim().split(',').map(str::parse).map(Result::unwrap).collect::<Vec<i32>>();
 }
 
+fn get_fuel_rate(a: i32, items: Vec<i32>) -> i32 {
+    let mut output_vec: Vec<i32> = vec![];
+    for item in items {
+        let mut output = 0;
+        let mut remainder = 0;
+        if a < item {
+            remainder = item - a ;
+        } else {
+            remainder = a - item;
+        }
+        for i in 0..remainder + 1 {
+            output = output + i;
+        }
+        output_vec.push(output);
+    }
+    return output_vec.iter().sum::<i32>();
+}
+
 fn check_number(input: i32, positions: Vec<i32>) -> i32 {
     let result = positions.iter().fold(vec![], |mut output, num| {
         if num > &input {
@@ -25,11 +43,15 @@ fn part1(input: &Vec<i32>) -> i32 {
 }
 
 fn part2(input: &Vec<i32>) -> i32 {
-    return *input.iter().min().unwrap();
+    let mut results = vec![];
+    for x in 0..*input.iter().max().unwrap() {
+        results.push(get_fuel_rate(x, input.to_vec()));
+    }
+    return *results.iter().min().unwrap();
 }
 
 fn main() {
-    const DATA: &str = include_str!("day5.input");
+    const DATA: &str = include_str!("day5.test");
     let input = parse_input(&DATA);
     println!("Part1 answer: {}", part1(&input));
     println!("Part2 answer: {}", part2(&input));
